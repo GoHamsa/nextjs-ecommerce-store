@@ -5,7 +5,7 @@ const animals = [
   { id: 2, firstName: 'macca', type: 'Dog', accessory: 'Comb' },
   { id: 3, firstName: 'jojo', type: 'Dodo', accessory: 'Dojo' },
   { id: 4, firstName: 'flo', type: 'Parrot', accessory: 'Carrot' },
-  { id: 4, firstName: 'Bili', type: 'Capybara', accessory: 'Pen' },
+  { id: 5, firstName: 'Bili', type: 'Capybara', accessory: 'Pen' },
 ];
 
 export function getAnimals() {

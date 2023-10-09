@@ -10,14 +10,14 @@ export default function GenerateButton() {
   // Cookies example
   // const allCookies = document.cookie;
   // console.log(allCookies);
-
+  /*
   useEffect(() => {
     const buttonColor = document.cookie
       .split('; ')
       .find((row) => row.startsWith('test2='))
       ?.split('=')[1];
     setColor(buttonColor || );
-  });
+  });*/
 
   return (
     <div>
