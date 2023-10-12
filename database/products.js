@@ -10,6 +10,11 @@ export const getProducts = () => {
   return products;
 };
 
-export const getSingleProduct = (id) => {
+export function getProductById(id) {
+  return products.find((product) => product.id === id);
+}
+
+/* export const getSingleProduct = (id) => {
   return products.find((product) => product.id === id);
 };
+ */

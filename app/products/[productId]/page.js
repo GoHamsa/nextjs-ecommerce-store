@@ -1,13 +1,20 @@
 import Image from 'next/image';
-import { notFound } from 'next/navigation';
-import { getSingleProduct } from '../../../database/products';
+import { getProductById } from '../../../database/products';
+import { getCookie } from '../../../util/cookies';
+import { parseJson } from '../../../util/json';
+import ProductCommentForm from './ProductCommentForm';
 
-export default function SingleProductPage({ params }) {
-  const product = getSingleProduct(Number(params.productId));
+export default function SingleProductPage(props) {
+  const product = getProductById(Number(props.params.productId));
+  const productsCommentsCookie = getCookie('productsComments');
 
-  if (!product) {
-    return notFound();
-  }
+  const productComments = !productsCommentsCookie
+    ? []
+    : parseJson(productsCommentsCookie);
+
+  const productCommentToDisplay = productComments.find((productComment) => {
+    return productComment.id === product.id;
+  });
 
   return (
     <div>
@@ -19,6 +26,8 @@ export default function SingleProductPage({ params }) {
         height={200}
       />
       <p>Price: ${product.price}</p>
+      <div>{productCommentToDisplay?.comment}</div>
+      <ProductCommentForm productId={product.id} />
     </div>
   );
 }
