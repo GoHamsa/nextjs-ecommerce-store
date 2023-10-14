@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { getProducts } from '../../database/products';
 import { getCookie } from '../../util/cookies';
 import { parseJson } from '../../util/json';
+import CheckoutButton from './CheckoutButton';
+import EmptyCartButton from './EmptyCartButton';
 
 export default function CartPage() {
   /*   const sumArray = [a, b];
@@ -11,6 +13,7 @@ export default function CartPage() {
   ); */
   // 1. get the current cookie
   const products = getProducts();
+  // [{"id":1,"comment":1},{"id":2,"comment":2}]
   const productsCommentsCookie = getCookie('productsComments');
   // 2. parse the cookie value
 
@@ -33,6 +36,12 @@ export default function CartPage() {
 
     // Filter out items with undefined quantity --> Display only added items in cart
     .filter((product) => product.comment !== undefined);
+
+  const initialValue = 0;
+  const totalPrice = productsWithComments.reduce((previousValue, product) => {
+    const price = product.price * product.comment;
+    return previousValue + price;
+  }, initialValue);
 
   return (
     <div>
@@ -61,6 +70,17 @@ export default function CartPage() {
           );
         })}
       </div>
+
+      {productsWithComments.length > 0 ? (
+        <>
+          <div> Total Price {totalPrice} </div>
+          <EmptyCartButton />
+          <br />
+          <CheckoutButton />
+        </>
+      ) : (
+        <div> No products in cart </div>
+      )}
     </div>
   );
 }

@@ -9,13 +9,15 @@ export default function ProductsPage() {
       <h1>Available Products</h1>
       {products.map((product) => (
         <div key={`product-div-${product.id}`}>
-          <Link href={`/products/${product.id}`}>{product.name}</Link>
-          <Image
-            src={`/images/${product.image}`}
-            alt={product.name}
-            width={200}
-            height={200}
-          />
+          <Link href={`/products/${product.id}`}>
+            <h2>{product.name}</h2>
+            <Image
+              src={`/images/${product.image}`}
+              alt={product.name}
+              width={200}
+              height={200}
+            />
+          </Link>
         </div>
       ))}
     </div>

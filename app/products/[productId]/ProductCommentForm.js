@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { createOrUpdateComment } from './actions';
 
 export default function ProductCommentForm(props) {
-  const [comment, setComment] = useState(0);
+  const [comment, setComment] = useState(1);
 
   const handleAddToCart = async () => {
     await createOrUpdateComment(props.productId, comment);
@@ -13,6 +13,7 @@ export default function ProductCommentForm(props) {
     <form onSubmit={(event) => event.preventDefault()}>
       <input
         type="number"
+        min="1"
         value={comment}
         onChange={(event) => setComment(Number(event.currentTarget.value))}
       />
