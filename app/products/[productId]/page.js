@@ -1,19 +1,19 @@
 import Image from 'next/image';
 import { getProductById } from '../../../database/products';
-import { getCookie } from '../../../util/cookies';
+import { getCookie, PRODUCTS_IN_CART_COOKIE_NAME } from '../../../util/cookies';
 import { parseJson } from '../../../util/json';
-import ProductCommentForm from './ProductCommentForm';
+import ProductQuantityForm from './ProductQuantityForm';
 
 export default function SingleProductPage(props) {
   const product = getProductById(Number(props.params.productId));
-  const productsCommentsCookie = getCookie('productsComments');
+  const productsQuantitysCookie = getCookie(PRODUCTS_IN_CART_COOKIE_NAME);
 
-  const productComments = !productsCommentsCookie
+  const productQuantitys = !productsQuantitysCookie
     ? []
-    : parseJson(productsCommentsCookie);
+    : parseJson(productsQuantitysCookie);
 
-  const productCommentToDisplay = productComments.find((productComment) => {
-    return productComment.id === product.id;
+  const productQuantityToDisplay = productQuantitys.find((productQuantity) => {
+    return productQuantity.id === product.id;
   });
 
   return (
@@ -26,8 +26,8 @@ export default function SingleProductPage(props) {
         height={200}
       />
       <p>Price: ${product.price}</p>
-      <div>{productCommentToDisplay?.comment}</div>
-      <ProductCommentForm productId={product.id} />
+      <div>{productQuantityToDisplay?.quantity}</div>
+      <ProductQuantityForm productId={product.id} />
     </div>
   );
 }

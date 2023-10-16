@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { getProducts } from '../../database/products';
-import { getCookie } from '../../util/cookies';
+import { getCookie, PRODUCTS_IN_CART_COOKIE_NAME } from '../../util/cookies';
 import { parseJson } from '../../util/json';
 import CheckoutButton from './CheckoutButton';
 import EmptyCartButton from './EmptyCartButton';
@@ -13,33 +13,33 @@ export default function CartPage() {
   ); */
   // 1. get the current cookie
   const products = getProducts();
-  // [{"id":1,"comment":1},{"id":2,"comment":2}]
-  const productsCommentsCookie = getCookie('productsComments');
+  // [{"id":1,"quantity":1},{"id":2,"quantity":2}]
+  const productsQuantitysCookie = getCookie(PRODUCTS_IN_CART_COOKIE_NAME);
   // 2. parse the cookie value
 
-  // !productsCommentsCookie <=> productsCommentsCookie === undefined
-  const productComments = !productsCommentsCookie
+  // !productsQuantitysCookie <=> productsQuantitysCookie === undefined
+  const productQuantitys = !productsQuantitysCookie
     ? // Case A: cookie is undefined
       // we need to create a new cookie with an empty array
       []
-    : parseJson(productsCommentsCookie);
+    : parseJson(productsQuantitysCookie);
 
   // Combine the cookie object with item object --> go with .map through the array --> try to .find if the item.id is in both arrays, when its found create a new variable and return it, otherwise return undefined
-  const productsWithComments = products
+  const productsWithQuantitys = products
     .map((product) => {
-      const matchingComment = productComments.find((commentObject) => {
-        return product.id === commentObject.id;
+      const matchingQuantity = productQuantitys.find((quantityObject) => {
+        return product.id === quantityObject.id;
       });
 
-      return { ...product, comment: matchingComment?.comment };
+      return { ...product, quantity: matchingQuantity?.quantity };
     })
 
     // Filter out items with undefined quantity --> Display only added items in cart
-    .filter((product) => product.comment !== undefined);
+    .filter((product) => product.quantity !== undefined);
 
   const initialValue = 0;
-  const totalPrice = productsWithComments.reduce((previousValue, product) => {
-    const price = product.price * product.comment;
+  const totalPrice = productsWithQuantitys.reduce((previousValue, product) => {
+    const price = product.price * product.quantity;
     return previousValue + price;
   }, initialValue);
 
@@ -47,7 +47,7 @@ export default function CartPage() {
     <div>
       <h1>Products in Cart</h1>
       <div>
-        {productsWithComments.map((product) => {
+        {productsWithQuantitys.map((product) => {
           return (
             <div key={`product-div-${product.id}`}>
               <Link href={`/products/${product.id}`}>
@@ -61,8 +61,8 @@ export default function CartPage() {
                 height={200}
               />
               <p>
-                Quantity: {product.comment} * Price: {product.price} $ ={' '}
-                {product.price * product.comment} $
+                Quantity: {product.quantity} * Price: {product.price} $ ={' '}
+                {product.price * product.quantity} $
               </p>
               {/* <p> {subSum} </p> */}
               <p> </p>
@@ -71,7 +71,7 @@ export default function CartPage() {
         })}
       </div>
 
-      {productsWithComments.length > 0 ? (
+      {productsWithQuantitys.length > 0 ? (
         <>
           <div> Total Price {totalPrice} </div>
           <EmptyCartButton />
@@ -84,24 +84,3 @@ export default function CartPage() {
     </div>
   );
 }
-
-/* // my first approach to create sub total. BUT .reduce can only add, i was attempting to multiply
-const productSubtotal = products.map((product) => {
-
-  const a = product.price;
-  const b = product.comment;
-  const subArray = [a, b];
-  const sumQuantity = subArray.reduce(accumulator, currentValue) => accumulator + currentValue, 0,
-}); */
-/*
-const array1 = [1, 2, 3, 4];
-
-// 0 + 1 + 2 + 3 + 4
-const initialValue = 0;
-const sumWithInitial = array1.reduce(
-  (accumulator, currentValue) => accumulator + currentValue,
-  initialValue,
-);
-
-console.log(sumWithInitial);
-// Expected output: 10 */

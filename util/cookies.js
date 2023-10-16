@@ -9,3 +9,5 @@ export function setCookie(name, value) {
   console.log('setCookie', name, value);
   return cookies().set(name, value);
 }
+
+export const PRODUCTS_IN_CART_COOKIE_NAME = 'productsQuantities';

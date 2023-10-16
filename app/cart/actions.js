@@ -1,8 +1,8 @@
 'use server';
 
-import { setCookie } from '../../util/cookies';
+import { PRODUCTS_IN_CART_COOKIE_NAME, setCookie } from '../../util/cookies';
 
 export async function emptyCart() {
-  await setCookie('productsComments', JSON.stringify([]));
+  await setCookie(PRODUCTS_IN_CART_COOKIE_NAME, JSON.stringify([]));
   console.log('emptyCart');
 }

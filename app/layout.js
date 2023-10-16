@@ -1,7 +1,7 @@
 import './globals.scss';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
-import { getCookie } from '../util/cookies';
+import { getCookie, PRODUCTS_IN_CART_COOKIE_NAME } from '../util/cookies';
 import { parseJson } from '../util/json';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -12,14 +12,14 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const productsCommentsCookie = getCookie('productsComments');
-  const productsInCart = !productsCommentsCookie
+  const productsQuantitysCookie = getCookie(PRODUCTS_IN_CART_COOKIE_NAME);
+  const productsInCart = !productsQuantitysCookie
     ? []
-    : parseJson(productsCommentsCookie);
+    : parseJson(productsQuantitysCookie);
 
   const initialValue = 0;
   const totalQuantity = productsInCart.reduce((previousValue, product) => {
-    return previousValue + product.comment;
+    return previousValue + product.quantity;
   }, initialValue);
 
   return (
@@ -32,10 +32,8 @@ export default function RootLayout({ children }) {
             <Link href="/cart">Cart</Link>
             <Link href="/checkout">Checkout</Link>
             <Link href="/thankyou">Thank You!</Link>
-            <Link href="/about">About</Link>
           </div>
-          {totalQuantity}
-          {/* {Math.floor(Math.random() * 10)} */}
+          {totalQuantity} products in 🛒
         </nav>
         {children}
       </body>

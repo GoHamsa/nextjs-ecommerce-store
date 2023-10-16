@@ -1,4 +1,3 @@
-// database/products.js
 const products = [
   { id: 1, name: 'Plain', price: 20, image: 'plain.png' },
   { id: 2, name: 'Chocolate', price: 30, image: 'chocolate.png' },
@@ -13,8 +12,3 @@ export const getProducts = () => {
 export function getProductById(id) {
   return products.find((product) => product.id === id);
 }
-
-/* export const getSingleProduct = (id) => {
-  return products.find((product) => product.id === id);
-};
- */
